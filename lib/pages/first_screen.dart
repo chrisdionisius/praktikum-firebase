@@ -22,7 +22,7 @@ class FirstScreen extends StatelessWidget {
             children: <Widget>[
               CircleAvatar(
                 backgroundImage: NetworkImage(
-                  imageUrl,
+                  imageUrl ?? 'https://placekitten.com/200/300',
                 ),
                 radius: 60,
                 backgroundColor: Colors.transparent,
@@ -36,7 +36,7 @@ class FirstScreen extends StatelessWidget {
                     color: Colors.black54),
               ),
               Text(
-                name,
+                name ?? email.split('@')[0],
                 style: TextStyle(
                     fontSize: 25,
                     color: Colors.deepPurple,
@@ -61,7 +61,6 @@ class FirstScreen extends StatelessWidget {
               RaisedButton(
                 onPressed: () {
                   signOutGoogle();
-
                   Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(builder: (context) {
                     return LoginPage();

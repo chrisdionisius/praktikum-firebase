@@ -8,26 +8,17 @@ String name;
 String email;
 String imageUrl;
 
-Future<String> signInEmail(String email, String password) async {
+Future<String> signInEmail(String emailInput, String password) async {
   await Firebase.initializeApp();
-  print(email);
-  print(password);
   try {
     UserCredential userCredential = await FirebaseAuth.instance
-        .signInWithEmailAndPassword(email: email, password: password);
+        .signInWithEmailAndPassword(email: emailInput, password: password);
+
     final User user = userCredential.user;
+
     if (user != null) {
-      // Checking if email and name is null
       assert(user.email != null);
-      assert(user.displayName != null);
-      assert(user.photoURL != null);
-      name = user.displayName;
       email = user.email;
-      imageUrl = user.photoURL;
-      // Only taking the first part of the name, i.e., First Name
-      if (name.contains(" ")) {
-        name = name.substring(0, name.indexOf(" "));
-      }
       assert(!user.isAnonymous);
       assert(await user.getIdToken() != null);
       final User currentUser = _auth.currentUser;
@@ -37,8 +28,9 @@ Future<String> signInEmail(String email, String password) async {
     }
   } on FirebaseAuthException catch (e) {
     if (e.code == 'user-not-found') {
-      print('No user found for that email.');
-      return null;
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailInput, password: password);
+      return await signInEmail(emailInput, password);
     } else if (e.code == 'wrong-password') {
       print('Wrong password provided for that user.');
       return null;
@@ -60,14 +52,12 @@ Future<String> signInWithGoogle() async {
       await _auth.signInWithCredential(credential);
   final User user = authResult.user;
   if (user != null) {
-    // Checking if email and name is null
     assert(user.email != null);
     assert(user.displayName != null);
     assert(user.photoURL != null);
     name = user.displayName;
     email = user.email;
     imageUrl = user.photoURL;
-    // Only taking the first part of the name, i.e., First Name
     if (name.contains(" ")) {
       name = name.substring(0, name.indexOf(" "));
     }
