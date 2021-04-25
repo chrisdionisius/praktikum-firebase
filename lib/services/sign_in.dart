@@ -18,7 +18,9 @@ Future<String> signInEmail(String emailInput, String password) async {
 
     if (user != null) {
       assert(user.email != null);
+      name = null;
       email = user.email;
+      imageUrl = null;
       assert(!user.isAnonymous);
       assert(await user.getIdToken() != null);
       final User currentUser = _auth.currentUser;
@@ -28,8 +30,7 @@ Future<String> signInEmail(String emailInput, String password) async {
     }
   } on FirebaseAuthException catch (e) {
     if (e.code == 'user-not-found') {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailInput, password: password);
+      await signUpEmail(emailInput, password);
       return await signInEmail(emailInput, password);
     } else if (e.code == 'wrong-password') {
       print('Wrong password provided for that user.');
@@ -37,6 +38,11 @@ Future<String> signInEmail(String emailInput, String password) async {
     }
   }
   return null;
+}
+
+Future<void> signUpEmail(String emailInput, String password) async {
+  FirebaseAuth.instance
+      .createUserWithEmailAndPassword(email: emailInput, password: password);
 }
 
 Future<String> signInWithGoogle() async {

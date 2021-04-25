@@ -1,8 +1,15 @@
 # firebase
 
-A new Flutter project.
+Praktikum pengerjaan jobsheet 8 - Firebase Authentication
 
-## Getting Started
+# Screenshot Aplikasi
+
+![screenshot](img/capture.gif)
+
+## Informasi Mahasiswa
+Nama : Dionisius D. Yapenrui <br>
+NIM : 1931710111 <br>
+Kelas : MI-2B
 
 This project is a starting point for a Flutter application.
 
