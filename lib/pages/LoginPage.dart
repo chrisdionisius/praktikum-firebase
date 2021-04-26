@@ -24,7 +24,36 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(height: 50),
               _emailPasswordField(),
               _emailSignInButton(),
+              Container(
+                width: 100,
+                child: Row(children: <Widget>[
+                  Expanded(
+                      child: Divider(
+                    color: Colors.black,
+                  )),
+                  Text(" OR "),
+                  Expanded(
+                      child: Divider(
+                    color: Colors.black,
+                  )),
+                ]),
+              ),
               _signInButton(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Belum punya akun ? '),
+                  new GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, "/signup");
+                    },
+                    child: new Text(
+                      'Daftar sekarang',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
@@ -101,6 +130,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _signInButton() {
     return Container(
+      margin: EdgeInsets.all(10),
       width: 300.0,
       height: 50,
       child: OutlineButton(

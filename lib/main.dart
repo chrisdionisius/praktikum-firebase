@@ -1,3 +1,4 @@
+import 'package:firebase/pages/signupPage.dart';
 import 'package:flutter/material.dart';
 import 'pages/LoginPage.dart';
 
@@ -12,7 +13,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LoginPage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => LoginPage(),
+        '/signup': (context) => SignupPage(),
+      },
     );
   }
 }
