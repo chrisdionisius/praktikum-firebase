@@ -99,6 +99,8 @@ class _LoginPageState extends State<LoginPage> {
                   },
                 ),
               );
+            } else {
+              passwordAlert(context);
             }
           });
         },
@@ -179,4 +181,31 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+}
+
+passwordAlert(BuildContext context) {
+  // set up the button
+  Widget okButton = FlatButton(
+    child: Text("OK"),
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Alert"),
+    content: Text("Email/Password salah !"),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }

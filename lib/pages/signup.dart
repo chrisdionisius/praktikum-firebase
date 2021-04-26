@@ -1,4 +1,6 @@
+import 'package:firebase/services/sign_in.dart';
 import 'package:flutter/material.dart';
+import 'first_screen.dart';
 import 'header.dart';
 
 class Signup extends StatelessWidget {
@@ -19,6 +21,10 @@ class Signup extends StatelessWidget {
 }
 
 class SignupCard extends StatelessWidget {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -65,6 +71,7 @@ class SignupCard extends StatelessWidget {
           new Padding(
               padding: EdgeInsets.fromLTRB(32.0, 0.0, 32.0, 2.0),
               child: TextField(
+                controller: emailController,
                 autofocus: true,
                 keyboardType: TextInputType.emailAddress,
                 autocorrect: false,
@@ -78,6 +85,7 @@ class SignupCard extends StatelessWidget {
           new Padding(
             padding: EdgeInsets.fromLTRB(32.0, 0.0, 32.0, 2.0),
             child: TextField(
+              controller: passwordController,
               obscureText: true,
               autofocus: true,
               keyboardType: TextInputType.text,
@@ -93,6 +101,7 @@ class SignupCard extends StatelessWidget {
           new Padding(
             padding: EdgeInsets.fromLTRB(32.0, 0.0, 32.0, 2.0),
             child: TextField(
+              controller: confirmPasswordController,
               obscureText: true,
               autofocus: true,
               keyboardType: TextInputType.text,
@@ -123,7 +132,30 @@ class SignupCard extends StatelessWidget {
                     splashColor: Colors.indigoAccent,
                     elevation: 2.0,
                     onPressed: () {
-                      bool enabled = !null;
+                      signUpEmail(emailController.text, passwordController.text)
+                          .then((result) {
+                        print(result);
+                        if (result == 'done') {
+                          print(result + ' kenek');
+                          signInEmail(
+                                  emailController.text, passwordController.text)
+                              .then((result) {
+                            if (result != null) {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return FirstScreen();
+                                  },
+                                ),
+                              );
+                            }
+                          });
+                        } else if (result == 'weak') {
+                          passwordAlert(context);
+                        } else {
+                          userAlert(context);
+                        }
+                      });
                     },
                     child: Text("Sign Up", style: TextStyle(fontSize: 14.0))),
               )),
@@ -133,4 +165,59 @@ class SignupCard extends StatelessWidget {
   }
 
   boxShadow({Color color}) {}
+}
+
+passwordAlert(BuildContext context) {
+  // set up the button
+  Widget okButton = FlatButton(
+    child: Text("OK"),
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Alert"),
+    content: Text("Password terlalu singkat !"),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+userAlert(BuildContext context) {
+  // set up the button
+  Widget okButton = FlatButton(
+    child: Text("OK"),
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Alert"),
+    content:
+        Text("User sudah terdaftar sebelumnya, silahkan gunakan email lain"),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }

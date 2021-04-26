@@ -30,8 +30,7 @@ Future<String> signInEmail(String emailInput, String password) async {
     }
   } on FirebaseAuthException catch (e) {
     if (e.code == 'user-not-found') {
-      await signUpEmail(emailInput, password);
-      return await signInEmail(emailInput, password);
+      return null;
     } else if (e.code == 'wrong-password') {
       print('Wrong password provided for that user.');
       return null;
@@ -40,9 +39,23 @@ Future<String> signInEmail(String emailInput, String password) async {
   return null;
 }
 
-Future<void> signUpEmail(String emailInput, String password) async {
-  FirebaseAuth.instance
-      .createUserWithEmailAndPassword(email: emailInput, password: password);
+Future<String> signUpEmail(String emailInput, String password) async {
+  try {
+    await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: emailInput, password: password);
+    return 'done';
+  } on FirebaseAuthException catch (e) {
+    if (e.code == 'weak-password') {
+      print('The password provided is too weak.');
+      return 'weak';
+    } else if (e.code == 'email-already-in-use') {
+      print('The account already exists for that email.');
+      return 'exists';
+    }
+  } catch (e) {
+    return null;
+  }
+  return null;
 }
 
 Future<String> signInWithGoogle() async {
