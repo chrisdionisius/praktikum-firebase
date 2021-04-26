@@ -5,6 +5,8 @@ Praktikum pengerjaan jobsheet 8 - Firebase Authentication
 # Screenshot Aplikasi
 
 ![screenshot](img/capture.gif)
+![screenshot](img/capture2.gif)
+![screenshot](img/capture3.gif)
 
 ## Informasi Mahasiswa
 Nama : Dionisius D. Yapenrui <br>
